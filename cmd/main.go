@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	err := app.SetupConfig("/config/.env")
+	err := app.SetupConfig("config/.env")
 	if err != nil {
 		logrus.Fatal(err)
 	}

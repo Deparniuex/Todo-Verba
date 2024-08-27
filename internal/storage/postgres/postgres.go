@@ -20,7 +20,7 @@ func ConnectDB(cfg *Config) (*sql.DB, error) {
 		"password=%s dbname=%s sslmode=disable",
 		cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.DBName)
 
-	db, err := sql.Open("pgrepo", psqlInfo)
+	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		panic(err)
 	}
