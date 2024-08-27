@@ -8,11 +8,20 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"net/http"
+	"time"
 )
 
 func (h *Handler) createTask(ctx *gin.Context) {
 	var req api.CreateTaskRequest
 	err := ctx.ShouldBindJSON(&req)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &api.ErrorResponse{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+		return
+	}
+	err = parseTime(req.CreatedAt, req.UpdatedAt, req.DueDate)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &api.ErrorResponse{
 			Code:    http.StatusBadRequest,
@@ -112,6 +121,14 @@ func (h *Handler) updateTask(ctx *gin.Context) {
 		})
 		return
 	}
+	err = parseTime(req.CreatedAt, req.UpdatedAt, req.DueDate)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &api.ErrorResponse{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+		return
+	}
 	err = h.Service.UpdateTask(&entity.Task{
 		ID:          id.Value,
 		Title:       req.Title,
@@ -174,4 +191,13 @@ func (h *Handler) deleteTask(ctx *gin.Context) {
 		Code:    http.StatusOK,
 		Message: "task deleted successfully",
 	})
+}
+
+func parseTime(times ...string) error {
+	for _, t := range times {
+		if _, err := time.Parse(time.RFC3339, t); err != nil {
+			return err
+		}
+	}
+	return nil
 }
