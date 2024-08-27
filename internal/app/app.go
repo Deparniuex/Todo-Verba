@@ -9,6 +9,7 @@ import (
 	"database/sql"
 	"github.com/golang-migrate/migrate/v4"
 	postgresMigrate "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"os"

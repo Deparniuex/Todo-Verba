@@ -1,6 +1,8 @@
 package service
 
-import "Todo-Verba/internal/repository"
+import (
+	"Todo-Verba/internal/repository"
+)
 
 type Manager struct {
 	Repository repository.Repository
