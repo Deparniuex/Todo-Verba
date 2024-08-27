@@ -1,7 +1,7 @@
 package api
 
 type ID struct {
-	Value int64 `json:"id"`
+	Value int64 `json:"-" uri:"id,min=0" binding:"required"`
 }
 
 type ErrorResponse struct {

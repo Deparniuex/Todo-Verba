@@ -7,13 +7,11 @@ func (m Manager) CreateTask(task *entity.Task) error {
 }
 
 func (m Manager) GetTasks() ([]*entity.Task, error) {
-	//TODO implement me
-	panic("implement me")
+	return m.Repository.GetTasks()
 }
 
 func (m Manager) GetTaskById(taskID int64) (*entity.Task, error) {
-	//TODO implement me
-	panic("implement me")
+	return m.Repository.GetTaskById(taskID)
 }
 
 func (m Manager) UpdateTask(task *entity.Task) error {

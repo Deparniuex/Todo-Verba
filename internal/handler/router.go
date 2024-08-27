@@ -9,9 +9,9 @@ func (h *Handler) InitRouter() *gin.Engine {
 	tasks := router.Group("/tasks")
 
 	tasks.POST("/", h.createTask)
-	tasks.GET("/")
-	tasks.GET("/:id")
-	tasks.PUT("/update/:id")
-	tasks.DELETE("/delete/:id")
+	tasks.GET("/", h.getTasks)
+	tasks.GET("/:id", h.getTaskByID)
+	tasks.PUT("/update/:id", h.updateTask)
+	tasks.DELETE("/delete/:id", h.deleteTask)
 	return router
 }
