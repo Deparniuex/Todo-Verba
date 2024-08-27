@@ -29,8 +29,24 @@ func (p Postgres) CreateTask(task *entity.Task) error {
 }
 
 func (p Postgres) GetTasks() ([]*entity.Task, error) {
-	//TODO implement me
-	panic("implement me")
+	query := fmt.Sprintf(`
+	SELECT * FROM %s
+	ORDER BY id
+`, tasksTable)
+	rows, err := p.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	var tasks []*entity.Task
+	for rows.Next() {
+		var task entity.Task
+		rows.Scan(&task.ID, &task.Title, &task.Description, &task.DueDate, &task.CreatedAt, &task.UpdatedAt)
+		tasks = append(tasks, &task)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return tasks, nil
 }
 
 func (p Postgres) GetTaskById(taskID int64) (*entity.Task, error) {
@@ -52,11 +68,40 @@ func (p Postgres) GetTaskById(taskID int64) (*entity.Task, error) {
 }
 
 func (p Postgres) UpdateTask(task *entity.Task) error {
-	//TODO implement me
-	panic("implement me")
+	query := fmt.Sprintf(`
+	UPDATE %s 
+	SET 
+	    title = $1,
+		description = $2,
+		due_date = $3,
+		created_at = $4,
+		updated_at = $5
+	WHERE id = $6
+`, tasksTable)
+	tag, err := p.DB.Exec(query, task.Title, task.Description, task.DueDate, task.CreatedAt, task.UpdatedAt, task.ID)
+	if err != nil {
+		return err
+	}
+
+	rowsSum, _ := tag.RowsAffected()
+	if rowsSum == 0 {
+		return ErrRecordNotFound
+	}
+	return nil
 }
 
 func (p Postgres) DeleteTask(taskID int64) error {
-	//TODO implement me
-	panic("implement me")
+	query := fmt.Sprintf(`
+		DELETE FROM %s
+		WHERE id = $1;
+`, tasksTable)
+	tag, err := p.DB.Exec(query, taskID)
+	if err != nil {
+		return err
+	}
+	rowsSum, _ := tag.RowsAffected()
+	if rowsSum == 0 {
+		return ErrRecordNotFound
+	}
+	return nil
 }

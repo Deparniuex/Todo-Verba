@@ -7,6 +7,7 @@ import (
 	"Todo-Verba/internal/service"
 	"Todo-Verba/internal/storage/postgres"
 	"database/sql"
+	"errors"
 	"github.com/golang-migrate/migrate/v4"
 	postgresMigrate "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -84,7 +85,7 @@ func upMigrations(db *sql.DB) error {
 
 	err = migrator.Up()
 	logrus.Infof("migrations status: %s", err)
-	if err != nil && err != migrate.ErrNoChange {
+	if err != nil && !errors.Is(err, migrate.ErrNoChange) {
 		return err
 	}
 	return nil

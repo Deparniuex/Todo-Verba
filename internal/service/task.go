@@ -15,11 +15,9 @@ func (m Manager) GetTaskById(taskID int64) (*entity.Task, error) {
 }
 
 func (m Manager) UpdateTask(task *entity.Task) error {
-	//TODO implement me
-	panic("implement me")
+	return m.Repository.UpdateTask(task)
 }
 
 func (m Manager) DeleteTask(taskID int64) error {
-	//TODO implement me
-	panic("implement me")
+	return m.Repository.DeleteTask(taskID)
 }
