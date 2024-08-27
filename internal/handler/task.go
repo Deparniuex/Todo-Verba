@@ -187,8 +187,8 @@ func (h *Handler) deleteTask(ctx *gin.Context) {
 			return
 		}
 	}
-	ctx.JSON(http.StatusOK, &api.DefaultResponse{
-		Code:    http.StatusOK,
+	ctx.JSON(http.StatusNoContent, &api.DefaultResponse{
+		Code:    http.StatusNoContent,
 		Message: "task deleted successfully",
 	})
 }
