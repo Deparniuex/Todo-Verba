@@ -3,8 +3,7 @@ package service
 import "Todo-Verba/internal/entity"
 
 func (m Manager) CreateTask(task *entity.Task) error {
-	//TODO implement me
-	panic("implement me")
+	return m.Repository.CreateTask(task)
 }
 
 func (m Manager) GetTasks() ([]*entity.Task, error) {
